@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>millon live </span>
+        <span>SHINY COLORS </span>
         <span class="font-weight-light">DD test</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -15,7 +15,7 @@
             <v-progress-linear
               background-color="pink lighten-3"
               color="pink lighten-1"
-              :value="group*2.08"
+              :value="group*(100/i)"
             ></v-progress-linear>
             <div class="px-3 mt-5">
               <div
@@ -57,7 +57,7 @@
               <v-btn
                 @click="nextGroup"
                 color="success"
-              >{{group>=48?"完成":"下一组"}}</v-btn>
+              >{{group>=i?"完成":"下一组"}}</v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
@@ -91,11 +91,12 @@ export default {
       crrt: [],
       btnText: "下一组",
       step: 0,
-      sorted: []
+      sorted: [],
+      i: 0
     };
   },
   mounted() {
-    require("@/assets/idol.json").forEach((el, i) => {
+    require("@/assets/idol.json")['283'].forEach((el, i) => {
       this.list.push({
         name: el,
         id: i,
@@ -103,6 +104,7 @@ export default {
       });
     });
     this.crrt = this.list.slice(this.group, this.group + 6);
+    this.i = Math.floor((this.list.length-1)/6) * 6;
   },
   watch: {
     group() {
@@ -111,7 +113,7 @@ export default {
   },
   methods: {
     nextGroup() {
-      if (this.group >= 48) {
+      if (this.group >= this.i) {
         this.step = 1;
       } else {
         this.group += 6;
